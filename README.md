@@ -1,3 +1,38 @@
+# Install Package on external storage
+```
+opkg update
+opkg install fdisk e2fsprogs
+```
+Insert USB drive
+
+SSH into GlInet
+Find drive location
+```
+df -h
+```
+Probably /dev/sda1
+```
+umount /dev/sda1
+mkfs.ext4 /dev/sda1
+```
+edit /etc/profile, add below lines to existing export lines. Replace sdb1 in the first line to yours, per your df output.
+```
+export USB=/mnt/sda1
+export PATH=$PATH:$USB/usr/bin:$USB/usr/sbin # This PATH is dependent on existing $PATH
+export LD_LIBRARY_PATH=$USB/lib:$USB/usr/lib
+```
+edit /etc/opkg.conf, add one line:
+```
+dest usb /mnt/sda1
+```
+reboot
+# Create Symbolic Links
+```
+mkdir /tmp/mountd/disk1_part1/docker
+mkdir /tmp/mountd/disk1_part1/containerd
+ln -s /tmp/mountd/disk1_part1/docker /opt/docker
+ln -s /tmp/mountd/disk1_part1/containerd /opt/containerd
+```
 # Download and Install Docker/MacVlan packages
 ```
 opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan nano

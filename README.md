@@ -7,9 +7,4 @@ uci commit
 /etc/init.d/odhcpd disable
 /etc/init.d/network restart```
 
-![image](https://github.com/falco1717/pihole---openwrt/assets/74680727/cff0f9f1-0bda-4aa7-8367-b42ad654ceb6)
 
-
-Install Docker and Docker-Compose on OpenWrt
-```opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan
-reboot```

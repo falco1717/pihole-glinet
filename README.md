@@ -1,18 +1,9 @@
-Disable IPv6 DHCP on OpenWrt
+# Download and Install Docker/MacVlan packages
 ```
-uci -q delete dhcp.lan.dhcpv6
-uci -q delete dhcp.lan.ra
-uci -q delete network.lan.ipv6
-uci commit
-/etc/init.d/odhcpd stop
-/etc/init.d/odhcpd disable
-/etc/init.d/network restart
-```
-Download and Install Docker/MacVlan packages
-```
-opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan
+opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan nano
 reboot
 ```
+# Setup MACVLAN interface in OpenWrt
 Here the MACVLAN interface will be created which is a virtual interface bridged to current LAN interface. This interface will later be used by Docker and PiHole.
 ```
 vi /etc/config/network
@@ -40,3 +31,26 @@ config route
         option target '192.168.8.3'
         option netmask '255.255.255.255'
 ```
+# Modify the firewall adding the new interface to the lan zone
+```
+nano /etc/config/firewall
+```
+Look for section similar to below:
+```
+config zone
+        option name 'lan'
+        option input 'ACCEPT'
+        option output 'ACCEPT'
+        option forward 'ACCEPT'
+        list network 'lan'
+```
+Then add the following line to it:
+```
+list network 'macvlan'
+```
+# Restart the network and firewall services
+```
+/etc/init.d/network restart 
+/etc/init.d/firewall restart
+```
+

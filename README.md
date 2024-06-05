@@ -121,12 +121,12 @@ networks:
 ```
 Create the folders for the volumes:
 ```
-mkdir -p ./pihole/etc-pihole/
-mkdir -p ./pihole/etc-dnsmasq.d/
-mkdir -p ./pihole/var-log/
-mkdir -p ./pihole/var-log/lighttpd
-chown 33:33 ./pihole/var-log/lighttpd
-mkdir -p ./pihole/etc-cont-init.d/
+mkdir -p /tmp/mountd/disk1_part1/pihole/etc/pihole/
+mkdir -p /tmp/mountd/disk1_part1/pihole/etc/dnsmasq.d/
+mkdir -p /tmp/mountd/disk1_part1/pihole/var-log/
+mkdir -p /tmp/mountd/disk1_part1/pihole/var-log/lighttpd
+chown 33:33 /tmp/mountd/disk1_part1/pihole/var-log/lighttpd
+mkdir -p /tmp/mountd/disk1_part1/pihole/etc-cont-init.d/
 ```
 Create 10-fixroutes.sh.
 ```
@@ -136,7 +136,7 @@ set -e
 echo "fixing routes"
 ip route del default
 ip route add default via 172.18.0.1
-echo "done fixing routes"' >> ./pihole/etc-cont-init.d/10-fixroutes.sh
+echo "done fixing routes"' >> /tmp/mountd/disk1_part1/pihole/etc-cont-init.d/10-fixroutes.sh
 chmod 755 ./pihole/etc-cont-init.d/10-fixroutes.sh
 ```
 # Start PiHole and finalize its setup
@@ -147,10 +147,10 @@ docker logs -f pihole
 ```
 Wait for PiHole to finish starting up and then hit CTRL+C. Then run the following:
 ```
-cd ~/pihole/etc-pihole
+cd /tmp/mountd/disk1_part1/pihole/etc/pihole
 sed -i -e 's/REV_SERVER.*//; s/REV_SERVER_CIDR.*//; s/REV_SERVER_TARGET.*//; s/REV_SERVER_DOMAIN.*//; s/PIHOLE_INTERFACE.*//' setupVars.conf
 echo 'REV_SERVER=true
-REV_SERVER_CIDR=192.168.1.0/24
+REV_SERVER_CIDR=192.168.8.0/24
 REV_SERVER_TARGET=127.0.0.11
 REV_SERVER_DOMAIN=lan
 PIHOLE_INTERFACE=eth0' >> setupVars.conf

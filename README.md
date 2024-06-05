@@ -35,7 +35,7 @@ ln -s /tmp/mountd/disk1_part1/containerd /opt/containerd
 ```
 # Download and Install Docker/MacVlan packages
 ```
-opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan nano
+opkg update && opkg install docker luci-app-dockerman docker-compose dockerd kmod-macvlan nano git git-http
 reboot
 ```
 # Setup MACVLAN interface in OpenWrt
@@ -121,13 +121,18 @@ networks:
 ```
 Create the folders for the volumes:
 ```
-mkdir -p /tmp/mountd/disk1_part1/pihole/etc/pihole/
-mkdir -p /tmp/mountd/disk1_part1/pihole/etc/dnsmasq.d/
-mkdir -p /tmp/mountd/disk1_part1/pihole/var-log/
-mkdir -p /tmp/mountd/disk1_part1/pihole/var-log/lighttpd
-chown 33:33 /tmp/mountd/disk1_part1/pihole/var-log/lighttpd
-mkdir -p /tmp/mountd/disk1_part1/pihole/etc-cont-init.d/
+mkdir -p /tmp/mountd/disk1_part1/docker/pihole/etc/pihole/
+mkdir -p /tmp/mountd/disk1_part1/docker/pihole/etc/dnsmasq.d/
+mkdir -p /tmp/mountd/disk1_part1/docker/pihole/var-log/
+mkdir -p /tmp/mountd/disk1_part1/docker/pihole/var-log/lighttpd
+chown 33:33 /tmp/mountd/disk1_part1/docker/pihole/var-log/lighttpd
+mkdir -p /tmp/mountd/disk1_part1/docker/pihole/etc-cont-init.d/
 ```
+# Download Github Repo
+```
+git clone https://github.com/falco1717/pihole-glinet /tmp/mountd/disk1_part1/docker/
+```
+
 Create 10-fixroutes.sh.
 ```
 echo '#!/usr/bin/with-contenv bash

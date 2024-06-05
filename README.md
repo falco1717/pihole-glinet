@@ -89,36 +89,7 @@ list network 'macvlan'
 /etc/init.d/firewall restart
 ```
 # Setup docker-compose.yml and PiHole
-```
-cd ~
-nano docker-compose.yml
-```
-Copy and paste the following and save. The following was retrieved from PiHole docs and slightly modified to fulfill our purpose. In the netowrk section at the bottom, the parent is set to the new macvlan interface created in the previous step from the option device line (the one with suffix .20). Also, the PiHole container will have a static IP which I've set to 192.168.8.3
-```
-version: '3'
 
-services:
-  pihole:
-    image: pihole/pihole:latest
-    container_name: pihole
-    environment:
-      TZ: 'America/Los_Angeles'  # Adjust timezone as needed
-      WEBPASSWORD: 'Your Password'
-    volumes:
-      - '/tmp/mountd/disk1_part1/docker/pihole/etc/pihole/:/etc/pihole/'
-      - '/tmp/mountd/disk1_part1/docker/pihole/etc/dnsmasq.d/:/etc/dnsmasq.d/'
-    networks:
-      lan:
-        ipv4_address: 192.168.8.3
-    restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-
-networks:
-  lan:
-    external:
-      name: macvlan_lan
-```
 Create the folders for the volumes:
 ```
 mkdir -p /tmp/mountd/disk1_part1/docker/pihole/etc/pihole/

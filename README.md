@@ -41,7 +41,7 @@ reboot
 # Setup MACVLAN interface in OpenWrt
 Here the MACVLAN interface will be created which is a virtual interface bridged to current LAN interface. This interface will later be used by Docker and PiHole.
 ```
-vi /etc/config/network
+nano /etc/config/network
 ```
 Look for the `config interface 'lan'` section and note down the device from the `option device` line. In my case it is `br-lan`.
 
